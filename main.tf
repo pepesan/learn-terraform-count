@@ -16,7 +16,7 @@ data "aws_availability_zones" "available" {
 
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
-
+  version = "5.8.1"
   cidr = var.vpc_cidr_block
 
   azs             = data.aws_availability_zones.available.names
@@ -31,7 +31,7 @@ module "vpc" {
 
 module "app_security_group" {
   source = "terraform-aws-modules/security-group/aws//modules/web"
-
+  version = "5.1.2"
   name        = "web-server-sg-${var.project_name}-${var.environment}"
   description = "Security group for web-servers with HTTP ports open within VPC"
   vpc_id      = module.vpc.vpc_id
@@ -41,8 +41,7 @@ module "app_security_group" {
 
 module "lb_security_group" {
   source  = "terraform-aws-modules/security-group/aws//modules/web"
-  version = "4.9.0"
-
+  version = "5.1.2"
   name = "load-balancer-sg-${var.project_name}-${var.environment}"
 
   description = "Security group for load balancer with HTTP ports open within VPC"
@@ -58,7 +57,7 @@ resource "random_string" "lb_id" {
 
 module "elb_http" {
   source  = "terraform-aws-modules/elb/aws"
-  version = "3.0.1"
+  version = "4.0.2"
 
   # Comply with ELB name restrictions
   # https://docs.aws.amazon.com/elasticloadbalancing/2012-06-01/APIReference/API_CreateLoadBalancer.html
